@@ -78,12 +78,12 @@ input.highlight {
 <label for="employees"><span class="label-title">Employees</span><span class="label-caption">Number of employees</span></label><input type="text" name="employees"/>
 <label for="shredtime"><span class="label-title">Time</span><span class="label-caption">Daily shred time per person</span><span class="unit">mins</span></label><input type="text" name="shredtime" />
 <!--<label for="workdays"><span class="label-title">Days</span><span class="label-caption">Work days per month</span><span class="unit">days/month</span></label><input type="text" name="workdays" /> -->
-<label for="wage"><span class="label-title">Wage</span><span class="label-caption">Employee average wage</span><span class="unit">$/hr.</span></label><input type="text" name="wage" />
-<label for="benefits"><span class="label-title">Benefits</span><span class="label-caption">Estimated benefits</span><span class="unit">$/hr.</span></label><input type="text" name="benefits" />
-<label for="shreddercost"><span class="label-title">Capital</span><span class="label-caption">Cost of shredder</span></label><input type="text" name="shreddercost" />
+<label for="wage"><span class="label-title">Wage</span><span class="label-caption">Employee average wage</span><span class="unit">$/hr.</span></label><input type="text" name="wage" class="price" />
+<label for="benefits"><span class="label-title">Benefits</span><span class="label-caption">Estimated benefits</span><span class="unit">$/hr.</span></label><input type="text" name="benefits" class="price" />
+<label for="shreddercost"><span class="label-title">Capital</span><span class="label-caption">Cost of shredder</span></label><input type="text" name="shreddercost" class="price" />
 <label for="shredderlife"><span class="label-title">Lifespan</span><span class="label-caption">Life expectancy of shredder</span><span class="unit">months</span></label><input type="text" name="shredderlife" />
-<label for="sundry"><span class="label-title">Sundry</span><span class="label-caption">Monthly cost of bags, oil, sharpening, etc.</span></label><input type="text" name="sundry" />
-<label for="recycling"><span class="label-title">Recycling</span><span class="label-caption">Recycling cost (assume $7 per large bag)*</span></label><input type="text" name="recycling" />
+<label for="sundry"><span class="label-title">Sundry</span><span class="label-caption">Monthly cost of bags, oil, sharpening, etc.</span></label><input type="text" name="sundry" class="price" />
+<label for="recycling"><span class="label-title">Recycling</span><span class="label-caption">Recycling cost (assume $7 per large bag)*</span></label><input type="text" name="recycling" class="price" />
 </form>
 <div id="calcoutput">
 Labor costs (per month) <span class="output" id="laborcosts"></span><br>
@@ -112,10 +112,14 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	   } else {
 	    jQuery(this).removeClass("highlight");
 	   }
+	   if(jQuery(this).hasClass("price")){
+	    jQuery(this).val( "$" + levalue);
+	   }
 	   calculate();
 	  });
 	  jQuery(".calc input").blur(function() {
-	   if(!jQuery(this).val()){
+	   var levalue = stripMoney(jQuery(this).val());
+	   if(!levalue){
 	    jQuery(this).val(0);
 	    jQuery(this).removeClass("highlight");
 	    calculate();
