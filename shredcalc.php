@@ -106,7 +106,8 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
  
   google.setOnLoadCallback(function() {
 	  jQuery(".calc input").keyup(function(){
-	   if(!isNumber(jQuery(this).val())){
+	   var levalue = stripMoney(jQuery(this).val());
+	   if(!isNumber(levalue)){
 	    jQuery(this).addClass("highlight");
 	   } else {
 	    jQuery(this).removeClass("highlight");
@@ -147,6 +148,9 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	}
 	function isNumber(n) {
 	  return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+	function stripMoney(num) {
+	  return num.replace(/\$|\,/g,"");
 	}
 </script>
 	';
