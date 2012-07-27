@@ -145,11 +145,11 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	var laborcosts = employees * (shredtime/60) * (parseFloat(wage) + parseFloat(benefits)) * workdays;
 	var machinecosts = nanToZero((shreddercost / shredderlife)) + parseFloat(sundry) + parseFloat(recycling);
 	var totalcosts = laborcosts + machinecosts;
-	jQuery("#laborcosts").html(laborcosts);
-	jQuery("#machinecosts").html(machinecosts);
-	jQuery("#depreciation").html(nanToZero((shreddercost / shredderlife)) / workdays);
-	jQuery("#totaltime").html(employees * workdays * (shredtime/60));
-	jQuery("#totalcost").html("$"+totalcosts);
+	jQuery("#laborcosts").html(laborcosts.toFixed(2));
+	jQuery("#machinecosts").html(machinecosts.toFixed(2));
+	jQuery("#depreciation").html((nanToZero((shreddercost / shredderlife)) / workdays).toFixed(2));
+	jQuery("#totaltime").html((employees * workdays * (shredtime/60)).toFixed(2));
+	jQuery("#totalcost").html("$"+totalcosts.toFixed(2));
 //jQuery("#totalcost").html(employees + " " + shredtime + " " + workdays + " " + wage + " " + benefits + " " + shreddercost + " " + shredderlife + " " + sundry + " " + recycling);
 	}
 	function isNumber(n) {
