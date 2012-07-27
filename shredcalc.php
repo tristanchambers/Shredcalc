@@ -109,13 +109,14 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	   var levalue = stripMoney(jQuery(this).val());
 	   if(!isNumber(levalue)){
 	    jQuery(this).addClass("highlight");
+	    jQuery("#totalcost").html("Error");
 	   } else {
 	    jQuery(this).removeClass("highlight");
+	    calculate();
 	   }
 	   if(jQuery(this).hasClass("price")){
 	    jQuery(this).val( "$" + levalue);
 	   }
-	   calculate();
 	  });
 	  jQuery(".calc input").blur(function() {
 	   var levalue = stripMoney(jQuery(this).val());
@@ -149,7 +150,11 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	jQuery("#machinecosts").html(machinecosts.toFixed(2));
 	jQuery("#depreciation").html((nanToZero((shreddercost / shredderlife)) / workdays).toFixed(2));
 	jQuery("#totaltime").html((employees * workdays * (shredtime/60)).toFixed(2));
-	jQuery("#totalcost").html("$"+totalcosts.toFixed(2));
+	if(!isNaN(totalcosts)){
+	 jQuery("#totalcost").html("$"+totalcosts.toFixed(2));
+	} else {
+	  jQuery("#totalcost").html("Error");
+	}
 //jQuery("#totalcost").html(employees + " " + shredtime + " " + workdays + " " + wage + " " + benefits + " " + shreddercost + " " + shredderlife + " " + sundry + " " + recycling);
 	}
 	function isNumber(n) {
