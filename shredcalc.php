@@ -129,15 +129,16 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	function calculate(){
 	var leform = document.calcform;
 	var leoutput = document.getElementById("calcoutput");
+
 	var employees = leform.employees.value;
 	var shredtime = leform.shredtime.value;
 	var workdays = 21.67; //leform.workdays.value;
-	var wage = leform.wage.value;
-	var benefits = leform.benefits.value;
-	var shreddercost = leform.shreddercost.value;
+	var wage = stripMoney(leform.wage.value);
+	var benefits = stripMoney(leform.benefits.value);
+	var shreddercost = stripMoney(leform.shreddercost.value);
 	var shredderlife = leform.shredderlife.value;
-	var sundry = leform.sundry.value;
-	var recycling = leform.recycling.value;
+	var sundry = stripMoney(leform.sundry.value);
+	var recycling = stripMoney(leform.recycling.value);
 
 //	leoutput.innerHTML = employees + " " + shredtime + " " + workdays + " " + wage + " " + benefits + " " + shreddercost + " " + shredderlife + " " + sundry + " " + recycling;
 
@@ -148,7 +149,8 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	jQuery("#machinecosts").html(machinecosts);
 	jQuery("#depreciation").html((shreddercost / shredderlife) / workdays);
 	jQuery("#totaltime").html(employees * workdays * (shredtime/60));
-	jQuery("#totalcost").html("$"+totalcosts);
+//	jQuery("#totalcost").html("$"+totalcosts);
+jQuery("#totalcost").html(employees + " " + shredtime + " " + workdays + " " + wage + " " + benefits + " " + shreddercost + " " + shredderlife + " " + sundry + " " + recycling);
 	}
 	function isNumber(n) {
 	  return !isNaN(parseFloat(n)) && isFinite(n);
