@@ -8,6 +8,15 @@ Author: Tristan Chambers tristan.chambers@gmail.com
 
 error_reporting(E_ALL);
 add_action("widgets_init", array('shredcalc', 'register'));
+
+function my_scripts_method() {
+//    wp_deregister_script( 'jquery' );
+    wp_register_script( 'qtip', plugins_url( 'jquery.qtip-1.0.0-rc3.min.js', __FILE__ ));
+    wp_enqueue_script( 'qtip' );
+}    
+ 
+add_action('wp_enqueue_scripts', 'my_scripts_method');
+
 class shredcalc {
   function control(){
     echo 'Calculates cost of in house shredding';
@@ -15,6 +24,9 @@ class shredcalc {
   function widget($args){
     echo $args['before_widget'];
     echo $args['before_title'] . 'Shred Calc' . $args['after_title'];
+    echo 'Helllllow World';
+plugins_url( 'myscript.js', __FILE__ );
+    echo 'Helllllow World';
     echo '
 <style type="text/css">
 div.calc {
@@ -67,32 +79,42 @@ input.highlight {
 	padding: 10px;
 }
 #totalcost {
-	line-height: 60px;
+/*	line-height: 60px;*/
 	font-size: 18px;
 	font-weight: bold;
+	margin-top: 10px;
+}
+#totalbox {
+	font-size: 15px;
+	padding-top: 10px;
+	padding-bottom: 15px;
+	width: 175px;
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>
 
 <div class="calc">
 <form name="calcform">
-<label for="employees"><span class="label-title">Employees</span><span class="label-caption">Number of employees</span></label><input type="text" name="employees"/>
-<label for="shredtime"><span class="label-title">Time</span><span class="label-caption">Daily shred time per person</span><span class="unit">mins</span></label><input type="text" name="shredtime" />
-<!--<label for="workdays"><span class="label-title">Days</span><span class="label-caption">Work days per month</span><span class="unit">days/month</span></label><input type="text" name="workdays" /> -->
-<label for="wage"><span class="label-title">Wage</span><span class="label-caption">Employee average wage</span><span class="unit">$/hr.</span></label><input type="text" name="wage" class="price" />
-<label for="benefits"><span class="label-title">Benefits</span><span class="label-caption">Estimated benefits</span><span class="unit">$/hr.</span></label><input type="text" name="benefits" class="price" />
-<label for="shreddercost"><span class="label-title">Capital</span><span class="label-caption">Cost of shredder</span></label><input type="text" name="shreddercost" class="price" />
-<label for="shredderlife"><span class="label-title">Lifespan</span><span class="label-caption">Life expectancy of shredder</span><span class="unit">months</span></label><input type="text" name="shredderlife" />
-<label for="sundry"><span class="label-title">Sundry</span><span class="label-caption">Monthly cost of bags, oil, sharpening, etc.</span></label><input type="text" name="sundry" class="price" />
-<label for="recycling"><span class="label-title">Recycling</span><span class="label-caption">Recycling cost (assume $7 per large bag)*</span></label><input type="text" name="recycling" class="price" />
+<label for="employees"><span class="label-title">Employees</span><span class="label-caption">Number of employees</span></label><input type="text" name="employees" value="5" />
+<label for="shredtime"><span class="label-title">Time</span><span class="label-caption">Daily shred time per person</span><span class="unit">mins</span></label><input type="text" name="shredtime" value="3" />
+<label for="wage"><span class="label-title">Wage</span><span class="label-caption">Employee average wage</span><span class="unit">$/hr.</span></label><input type="text" name="wage" class="price" value="$16.19" />
+<label for="benefits"><span class="label-title">Benefits</span><span class="label-caption">Estimated benefits</span><span class="unit">$/hr.</span></label><input type="text" name="benefits" class="price" value="$0.00" />
+<label for="shreddercost"><span class="label-title">Capital</span><span class="label-caption">Cost of shredder</span></label><input type="text" name="shreddercost" class="price" value="$2000" />
+<label for="shredderlife"><span class="label-title">Lifespan</span><span class="label-caption">Life expectancy of shredder</span><span class="unit">months</span></label><input type="text" name="shredderlife" value="48" />
+<label for="sundry"><span class="label-title">Sundry</span><span class="label-caption">Monthly cost of bags, oil, sharpening, etc.</span></label><input type="text" name="sundry" class="price" value="$4.73" />
+<label for="recycling"><span class="label-title">Recycling</span><span class="label-caption">Recycling cost (assume $7 per large bag)</span></label><input type="text" name="recycling" class="price" value="$0.00" />
 </form>
 <div id="calcoutput">
-Labor costs (per month) <span class="output" id="laborcosts"></span><br>
-Machine costs (per month) <span class="output" id="machinecosts"></span><br>
-Machine depreciation (per month) <span class="output" id="depreciation"></span><br>
-Time spent shredding (hours/month) - (does not include maintenance) <span class="output" id="totaltime"></span><br>
-Total shredding costs (per month) <br> <span class="output" id="totalcost"></span><br>
+Labor costs $<span class="output" id="laborcosts"></span>/m<br>
+Machine costs $<span class="output" id="machinecosts"></span>/m<br>
+Machine depreciation $<span class="output" id="depreciation"></span>/m<br>
+Time spent shredding <span class="output" id="totaltime"></span> hr/m<br>
+(does not include maintenance)
+<div id="totalbox">Your total shredding costs per month<div class="output" id="totalcost"></div></div>
 </div>
 </div>';
+
     echo $args['after_widget'];
 	echo '
 <script type="text/javascript" 
@@ -126,6 +148,7 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	    calculate();
 	   }
 	  });
+	  calculate();
   });
 	function calculate(){
 	var leform = document.calcform;
@@ -172,7 +195,6 @@ Total shredding costs (per month) <br> <span class="output" id="totalcost"></spa
 	}
 </script>
 	';
-
   }
   function register(){
     register_sidebar_widget('Shred Calc', array('shredcalc', 'widget'));
