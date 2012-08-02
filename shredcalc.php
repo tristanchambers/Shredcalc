@@ -15,6 +15,9 @@ function my_scripts_method() {
 	wp_register_script('shredcalc', plugins_url('shredcalc.js', __FILE__));
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('shredcalc');
+
+	wp_register_style('shredcalc', plugins_url('shredcalc.css', __FILE__));
+	wp_enqueue_style('shredcalc');
 }
  
 add_action('wp_enqueue_scripts', 'my_scripts_method');
@@ -27,72 +30,6 @@ class shredcalc {
 		echo $args['before_widget'];
 		echo $args['before_title'] . 'Shred Calc' . $args['after_title'];
 		echo '
-<style type="text/css">
-div.calc {
-	font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-	width: 290px;
-	border: 1px dashed grey;
-	font-size: 12px;
-	line-height: 16px;
-	background: white;
-}
-div.calc label {
-	background: #eee;
-	margin: 2px;
-	padding: 2px;
-	width: 160px;
-	display: inline-block;
-	text-align: right;
-	vertical-align: middle;
-	margin-left: 5px;
-}
-div.calc input {
-	width: 100px;
-	font-size:12px;
-	padding: 4px 2px;
-	border:solid 1px grey;
-	margin-left: 3px;
-	text-align: right;
-/*	float: left;*/
-}
-span.label-title {
-	font-weight: bold;
-	display: block;
-}
-span.label-caption {
-	font-size: .9em;
-}
-span.unit {
-	position: absolute;
-	margin: -14px 0 0 13px ;
-	opacity: .5;
-	font-size: .9em;
-}
-input.highlight {
-	-moz-box-shadow: 0 0 3px 3px rgba(100, 0, 0, 0.25);
-	-webkit-box-shadow: 0 0 3px 3px rgba(100, 0, 0, 0.25);
-	box-shadow: 0 0 3px 3px rgba(100, 0, 0, 0.25);
-}
-#calcoutput {
-	text-align: center;
-	padding: 10px;
-}
-#totalcost {
-/*	line-height: 60px;*/
-	font-size: 18px;
-	font-weight: bold;
-	margin-top: 10px;
-}
-#totalbox {
-	font-size: 15px;
-	padding-top: 10px;
-	padding-bottom: 15px;
-	width: 175px;
-	margin-left: auto;
-	margin-right: auto;
-}
-</style>
-
 <div class="calc">
 <form name="calcform">
 <label for="employees"><span class="label-title">Employees</span><span class="label-caption">Number of employees</span></label><input type="text" name="employees" value="5" />
