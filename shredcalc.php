@@ -2,7 +2,7 @@
 /*
 Plugin Name: Shred Calc
 Description: Calculates cost of in house shredding
-Version: 1.0
+Version: 3.3.1
 Author: Tristan Chambers tristan.chambers@gmail.com
 */
 
@@ -10,24 +10,23 @@ error_reporting(E_ALL);
 add_action("widgets_init", array('shredcalc', 'register'));
 
 function my_scripts_method() {
-//    wp_deregister_script( 'jquery' );
-    wp_register_script( 'qtip', plugins_url( 'jquery.qtip-1.0.0-rc3.min.js', __FILE__ ));
-    wp_enqueue_script( 'qtip' );
-}    
+//	wp_register_script( 'qtip', plugins_url( 'jquery.qtip-1.0.0-rc3.min.js', __FILE__ ));
+//    wp_enqueue_script( 'qtip' );
+	wp_register_script('shredcalc', plugins_url('shredcalc.js', __FILE__));
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('shredcalc');
+}
  
 add_action('wp_enqueue_scripts', 'my_scripts_method');
 
 class shredcalc {
-  function control(){
-    echo 'Calculates cost of in house shredding';
-  }
-  function widget($args){
-    echo $args['before_widget'];
-    echo $args['before_title'] . 'Shred Calc' . $args['after_title'];
-    echo 'Helllllow World';
-plugins_url( 'myscript.js', __FILE__ );
-    echo 'Helllllow World';
-    echo '
+	function control(){
+		echo 'Calculates cost of in house shredding';
+	}
+	function widget($args){
+		echo $args['before_widget'];
+		echo $args['before_title'] . 'Shred Calc' . $args['after_title'];
+		echo '
 <style type="text/css">
 div.calc {
 	font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -114,91 +113,11 @@ Time spent shredding <span class="output" id="totaltime"></span> hr/m<br>
 <div id="totalbox">Your total shredding costs per month<div class="output" id="totalcost"></div></div>
 </div>
 </div>';
-
-    echo $args['after_widget'];
-	echo '
-<script type="text/javascript" 
-        src="http://www.google.com/jsapi"></script>
-<script type="text/javascript">
-  // You may specify partial version numbers, such as "1" or "1.3",
-  //  with the same result. Doing so will automatically load the 
-  //  latest version matching that partial revision pattern 
-  //  (e.g. 1.3 would load 1.3.2 today and 1 would load 1.4.1).
-  google.load("jquery", "1");
- 
-  google.setOnLoadCallback(function() {
-	  jQuery(".calc input").keyup(function(){
-	   var levalue = stripMoney(jQuery(this).val());
-	   if(!isNumber(levalue)){
-	    jQuery(this).addClass("highlight");
-	    jQuery("#totalcost").html("Error");
-	   } else {
-	    jQuery(this).removeClass("highlight");
-	    calculate();
-	   }
-	   if(jQuery(this).hasClass("price")){
-	    jQuery(this).val( "$" + levalue);
-	   }
-	  });
-	  jQuery(".calc input").blur(function() {
-	   var levalue = stripMoney(jQuery(this).val());
-	   if(!levalue){
-	    jQuery(this).val(0);
-	    jQuery(this).removeClass("highlight");
-	    calculate();
-	   }
-	  });
-	  calculate();
-  });
-	function calculate(){
-	var leform = document.calcform;
-	var leoutput = document.getElementById("calcoutput");
-
-	var employees = leform.employees.value;
-	var shredtime = leform.shredtime.value;
-	var workdays = 21.67; //leform.workdays.value;
-	var wage = stripMoney(leform.wage.value);
-	var benefits = stripMoney(leform.benefits.value);
-	var shreddercost = stripMoney(leform.shreddercost.value);
-	var shredderlife = leform.shredderlife.value;
-	var sundry = stripMoney(leform.sundry.value);
-	var recycling = stripMoney(leform.recycling.value);
-
-//	leoutput.innerHTML = employees + " " + shredtime + " " + workdays + " " + wage + " " + benefits + " " + shreddercost + " " + shredderlife + " " + sundry + " " + recycling;
-
-	var laborcosts = employees * (shredtime/60) * (parseFloat(wage) + parseFloat(benefits)) * workdays;
-	var machinecosts = nanToZero((shreddercost / shredderlife)) + parseFloat(sundry) + parseFloat(recycling);
-	var totalcosts = laborcosts + machinecosts;
-	jQuery("#laborcosts").html(laborcosts.toFixed(2));
-	jQuery("#machinecosts").html(machinecosts.toFixed(2));
-	jQuery("#depreciation").html((nanToZero((shreddercost / shredderlife)) / workdays).toFixed(2));
-	jQuery("#totaltime").html((employees * workdays * (shredtime/60)).toFixed(2));
-	if(!isNaN(totalcosts)){
-	 jQuery("#totalcost").html("$"+totalcosts.toFixed(2));
-	} else {
-	  jQuery("#totalcost").html("Error");
+		echo $args['after_widget'];
 	}
-//jQuery("#totalcost").html(employees + " " + shredtime + " " + workdays + " " + wage + " " + benefits + " " + shreddercost + " " + shredderlife + " " + sundry + " " + recycling);
+	function register(){
+		register_sidebar_widget('Shred Calc', array('shredcalc', 'widget'));
+		register_widget_control('Shred Calc', array('shredcalc', 'control'));
 	}
-	function isNumber(n) {
-	  return !isNaN(parseFloat(n)) && isFinite(n);
-	}
-	function stripMoney(num) {
-	  return num.replace(/\$|\,/g,"");
-	}
-	function nanToZero(n) {
-	  if(isNaN(n)){
-		return(0);
-	  } else {
-		return(n);
-	  }
-	}
-</script>
-	';
-  }
-  function register(){
-    register_sidebar_widget('Shred Calc', array('shredcalc', 'widget'));
-    register_widget_control('Shred Calc', array('shredcalc', 'control'));
-  }
 }
 ?>
