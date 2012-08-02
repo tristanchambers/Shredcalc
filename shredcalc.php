@@ -10,10 +10,9 @@ error_reporting(E_ALL);
 add_action("widgets_init", array('shredcalc', 'register'));
 
 function my_scripts_method() {
-//	wp_register_script( 'qtip', plugins_url( 'jquery.qtip-1.0.0-rc3.min.js', __FILE__ ));
-//    wp_enqueue_script( 'qtip' );
-	wp_register_script('shredcalc', plugins_url('shredcalc.js', __FILE__));
 	wp_enqueue_script('jquery');
+
+	wp_register_script('shredcalc', plugins_url('shredcalc.js', __FILE__));
 	wp_enqueue_script('shredcalc');
 
 	wp_register_style('shredcalc', plugins_url('shredcalc.css', __FILE__));
