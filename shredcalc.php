@@ -2,11 +2,11 @@
 /*
 Plugin Name: Shred Calc
 Description: Calculates cost of in house shredding
-Version: 3.3.1
+Version: 3.3.2
 Author: Tristan Chambers tristan.chambers@gmail.com
 */
 
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 add_action("widgets_init", array('shredcalc', 'register'));
 
 function my_scripts_method() {
