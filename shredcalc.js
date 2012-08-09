@@ -20,6 +20,9 @@ jQuery(document).ready(function() {
 	    calculate();
 	   }
 	  });
+		jQuery(".calc input").click(function() {
+  		jQuery(this).val('');
+		});
 	  calculate();
 });
 function calculate(){
