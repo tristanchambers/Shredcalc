@@ -9,7 +9,7 @@ Author: Tristan Chambers tristan.chambers@gmail.com
 //error_reporting(E_ALL);
 add_action("widgets_init", array('shredcalc', 'register'));
 
-function my_scripts_method() {
+function shredcalc_scripts_method() {
 	wp_enqueue_script('jquery');
 
 	wp_register_script('shredcalc', plugins_url('shredcalc.js', __FILE__));
@@ -19,7 +19,7 @@ function my_scripts_method() {
 	wp_enqueue_style('shredcalc');
 }
  
-add_action('wp_enqueue_scripts', 'my_scripts_method');
+add_action('wp_enqueue_scripts', 'shredcalc_scripts_method');
 
 class shredcalc {
 	function control(){
@@ -56,4 +56,3 @@ Time spent shredding <span class="output" id="totaltime"></span> hr/m<br>
 		register_widget_control('Shred Calc', array('shredcalc', 'control'));
 	}
 }
-?>
